@@ -17,6 +17,7 @@ from sparkperf.config_utils import FlagSet, JavaOptionSet, OptionSet, ConstantOp
 #  James                           #
 # ================================ #
 
+# Set by sample.py
 TO_RUN_SINGLE = "kmeans"
 
 TO_RUN = set([
@@ -36,7 +37,8 @@ MAX_PARTITIONS_1_NODE = NUM_CORES_PER_MACHINE
 # NUM_PARTITIONS = MAX_PARTITIONS_1_NODE
 # NUM_PARTITIONS = 1
 
-NUM_PARTITIONS = 1
+# Set by sample.py
+NUM_PARTITIONS = 16
 
 SCALE_DOWN_FACTOR = float(NUM_MACHINES) / 20.0
 INPUT_SCALE_DOWN_FACTOR = ( float(NUM_MACHINES) / 20.0 ) / (4 * 25.0)
@@ -45,7 +47,7 @@ INPUT_SCALE_DOWN_FACTOR = ( float(NUM_MACHINES) / 20.0 ) / (4 * 25.0)
 #  Standard Configuration Options  #
 # ================================ #
 
-DEFAULT_HOME=os.environ['HOME']
+DEFAULT_HOME = os.environ['HOME']
 
 # Point to an installation of Spark on the cluster.
 SPARK_HOME_DIR = os.getenv('SPARK_HOME', DEFAULT_HOME)
@@ -58,7 +60,7 @@ SPARK_CONF_DIR = SPARK_HOME_DIR + "/conf"
 # For local clusters (default): "spark://%s:7077" % socket.gethostname()
 # For Yarn clusters: "yarn"
 
-SPARK_CLUSTER_URL="spark://%s:7077" % socket.gethostname()
+SPARK_CLUSTER_URL = "spark://%s:7077" % socket.gethostname()
 
 IS_YARN_MODE = "yarn" in SPARK_CLUSTER_URL
 IS_MESOS_MODE = "mesos" in SPARK_CLUSTER_URL
@@ -176,6 +178,9 @@ IGNORED_TRIALS = 0
 SPARK_DRIVER_MEMORY = str(int(math.ceil(20 * SCALE_DOWN_FACTOR))) + "g"
 SPARK_EXECUTOR_MEMORY = str(int(math.ceil(9 * SCALE_DOWN_FACTOR))) + "g"
 
+# Set by sample.py
+PROFILE_OPTS = []
+
 # Java options.
 COMMON_JAVA_OPTS = [
     # Fraction of JVM memory used for caching RDDs.
@@ -188,7 +193,7 @@ COMMON_JAVA_OPTS = [
     # JavaOptionSet("spark.eventLog.enabled", [True]),
     # To ensure consistency across runs, we disable delay scheduling
     JavaOptionSet("spark.locality.wait", [str(60 * 1000 * 1000)])
-]
+] + PROFILE_OPTS
 # Set driver memory here
 # SPARK_DRIVER_MEMORY = "20g"
 # The following options value sets are shared among all tests.
