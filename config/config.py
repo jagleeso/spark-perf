@@ -18,7 +18,7 @@ from sparkperf.config_utils import FlagSet, JavaOptionSet, OptionSet, ConstantOp
 # ================================ #
 
 # Set by sample.py
-TO_RUN_SINGLE = "kmeans"
+TO_RUN_SINGLE = "naive-bayes"
 
 TO_RUN = set([
     TO_RUN_SINGLE,
@@ -103,8 +103,9 @@ PREP_SPARK = not USE_CLUSTER_SPARK
 
 # Whether to restart the Master and all Workers
 # This should always be false for Yarn
-RESTART_SPARK_CLUSTER = True
-RESTART_SPARK_CLUSTER = RESTART_SPARK_CLUSTER and not IS_YARN_MODE
+# RESTART_SPARK_CLUSTER = True
+# RESTART_SPARK_CLUSTER = RESTART_SPARK_CLUSTER and not IS_YARN_MODE
+RESTART_SPARK_CLUSTER = False
 
 # Rsync SPARK_HOME to all the slaves or not
 RSYNC_SPARK_HOME = False
@@ -176,7 +177,7 @@ IGNORED_TRIALS = 0
 # passed to each test which may be combinations of those set up here.
 
 SPARK_DRIVER_MEMORY = str(int(math.ceil(20 * SCALE_DOWN_FACTOR))) + "g"
-SPARK_EXECUTOR_MEMORY = str(int(math.ceil(9 * SCALE_DOWN_FACTOR))) + "g"
+SPARK_EXECUTOR_MEMORY = "512m"
 
 # Set by sample.py
 PROFILE_OPTS = []
@@ -184,7 +185,7 @@ PROFILE_OPTS = []
 # Java options.
 COMMON_JAVA_OPTS = [
     # Fraction of JVM memory used for caching RDDs.
-    JavaOptionSet("spark.storage.memoryFraction", [0.66]),
+    JavaOptionSet("spark.memory.fraction", [0.66]),
     JavaOptionSet("spark.serializer", ["org.apache.spark.serializer.JavaSerializer"]),
     # JavaOptionSet("spark.executor.memory", ["2g"]),
     JavaOptionSet("spark.executor.memory", [SPARK_EXECUTOR_MEMORY]),
